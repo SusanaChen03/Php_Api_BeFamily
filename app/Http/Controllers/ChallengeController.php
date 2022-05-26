@@ -135,5 +135,27 @@ class ChallengeController extends Controller
         }
     }
 
+    public function deleteChallengeById($id)
+    {
+        try {
+            Log::info('delete challenge');
+            $userId = auth()->user()->id;
+
+            $challenge = Challenge::where('id',$id)->where('user_id',$userId)->first();
+
+            if(empty($challenge)){
+                return response()->json(["error"=> "challenge not exists"], 404);
+            };
+            $challenge->delete();
+
+            return response()->json(["data"=> "challenge deleted"], 200);
+
+        } catch (\Throwable $th) {
+        Log::error('Failes to deleted the challenge->'.$th->getMessage());
+
+        return response()->json([ 'error'=> 'Ups! Something wrong'], 500);
+        }
+    }
+
   
 }
