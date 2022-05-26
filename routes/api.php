@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,16 @@ Route::get('/user/{id}', [UserController::class, 'getUserById']);
 Route::patch('/user/{id}', [UserController::class, 'updateUserById']);   
 Route::delete('/user/{id}', [UserController::class, 'deleteUserById']);   
 });
+
+
+//MEMBER
+
+Route::group([
+    'middleware' => 'jwt.auth'
+], function(){
+Route::post('/member', [MemberController::class, 'createUserMember']);  
+});
+
 
 
 
