@@ -93,5 +93,47 @@ class ChallengeController extends Controller
             return response()->json([ 'error'=> 'Ups! Something wrong'], 500);
         }
     }
+
+    public function updateChallengeById(Request $request, $id)
+    {
+        try {
+            Log::info('Update Challenge by id');
+            $userId = auth()->user()->id;
+
+            $validator = Validator::make($request->all(), [   
+                'name' => 'string|max:100',
+                'repeat' => 'integer|max:100',
+                'reward' => 'string'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 418);
+            };
+
+            $challenge = Challenge::where('id',$id)->where('user_id',$userId)->first();
+
+            if(empty($challenge)){
+                return response()->json(["error"=> "challenge not exists"], 404);
+            };
+
+            if(isset($request->name)){
+                $challenge->name = $request->name;};
+
+            if(isset($request->repeat)){
+                $challenge->repeat = $request->repeat;};
+
+            if(isset($request->reward)){
+                $challenge->reward = $request->reward;};
+
+            $challenge->save();
+
+            return response()->json(["data"=>$challenge, "success"=>'Challenge updated'], 200);
+            
+        } catch (\Throwable $th) {
+            Log::error('Failed to update the challenge->'.$th->getMessage());
+            return response()->json([ 'error'=> 'Ups! Something wrong'], 500);
+        }
+    }
+
   
 }
