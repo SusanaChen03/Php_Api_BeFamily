@@ -43,5 +43,30 @@ class ChallengeController extends Controller
             return response()->json([ 'error'=> 'Ups! Something wrong'], 500);
         }
     }
+
+    public function getAllChallenge()
+    {
+        try {
+            Log::info('Init get all Challenge');
+            $userId = auth()->user()->id;
+
+            $challenge = DB::table('challenges')->where('user_id', $userId)->get()->toArray();
+            
+            if(empty($challenge)){
+                return response()->json(
+                    [
+                        "success" => "There are not challenges"
+                    ], 202
+                );
+            };
+
+            return response()->json($challenge, 200);
+            
+        } catch (\Throwable $th) {
+
+            Log::error('Failed to get all the challenges->'.$th->getMessage());
+            return response()->json([ 'error'=> 'Ups! Something wrong'], 500);  
+        }
+    }
   
 }
