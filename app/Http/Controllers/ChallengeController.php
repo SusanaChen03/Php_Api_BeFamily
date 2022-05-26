@@ -79,10 +79,7 @@ class ChallengeController extends Controller
 
             if(empty($challenge)){
                 return response()->json(
-                    [
-                        "error" => "Challenge not exists"
-                    ],404
-                );
+                    [  "error" => "Challenge not exists"  ],404  );
             };
 
             return response()->json($challenge, 200);
@@ -156,6 +153,4 @@ class ChallengeController extends Controller
         return response()->json([ 'error'=> 'Ups! Something wrong'], 500);
         }
     }
-
-  
 }
