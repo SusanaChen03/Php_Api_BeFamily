@@ -68,5 +68,30 @@ class ChallengeController extends Controller
             return response()->json([ 'error'=> 'Ups! Something wrong'], 500);  
         }
     }
+
+    public function getChallengeById($id) //busqueda por id del usuario 
+    {
+        try {
+            Log::info('Init get Challenge by id');
+            $userId = auth()->user()->id;
+
+            $challenge = DB::table('challenges')->where('user_id',$userId)->where('user_id',$id)->get();
+
+            if(empty($challenge)){
+                return response()->json(
+                    [
+                        "error" => "Challenge not exists"
+                    ],404
+                );
+            };
+
+            return response()->json($challenge, 200);
+
+        } catch (\Throwable $th) {
+            Log::error('Failed to get challenge by id->'.$th->getMessage());
+
+            return response()->json([ 'error'=> 'Ups! Something wrong'], 500);
+        }
+    }
   
 }
