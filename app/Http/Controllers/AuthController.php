@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-
-
 class AuthController extends Controller
 {
     public function register(Request $request)
@@ -19,6 +17,7 @@ class AuthController extends Controller
             Log::info('Init register user');
 
             $validator = Validator::make($request->all(), [
+                'familyName'=> 'required|string|unique:users',
                 'name' => 'required|string|max:255',
                 'birthday' => 'required|date',
                 'email' => 'required|string|email|max:255|unique:users',
@@ -45,7 +44,6 @@ class AuthController extends Controller
 
             return response()->json(['error' => $th->getMessage()], 500);
         }
-
     }
 
     public function login(Request $request)
@@ -97,7 +95,6 @@ class AuthController extends Controller
         }
     }
 
-
     public function profile()
     {
         try {
@@ -112,5 +109,4 @@ class AuthController extends Controller
             return response()->json(['error=> Error to get profile'], 500);
         }
     }
-
 }
