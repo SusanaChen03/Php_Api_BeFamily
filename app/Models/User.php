@@ -59,4 +59,9 @@ class User extends Authenticatable implements JWTSubject
     {
     return [];
     }
+
+    public function challenges()  //one to many
+    {
+        return $this->hasMany(Challenge::class);  //one user have many challenges
+    }
 }
