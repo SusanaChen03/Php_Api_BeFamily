@@ -15,10 +15,11 @@ class Challenge extends Model
     use HasFactory;
 
     protected $fillable = [ 
+        'familyName',
         'name',
         'repeat',
         'reward',
-        'familyName',
+        'member_id',
         'user_id'
     ];
 
