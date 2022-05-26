@@ -53,10 +53,7 @@ class UserController extends Controller
 
             if(empty($user)){
                 return response()->json(
-                    [
-                        "success" => "There are not users"
-                    ], 202
-                );
+                    ["success" => "There are not users" ], 202);
             };
 
             Log::info('Get all users');
@@ -66,7 +63,7 @@ class UserController extends Controller
         } catch (\Throwable $th) {
             Log::error('Failed to get all users->'.$th->getMessage());
 
-            return response()->json([ 'error'=> 'Ups! Something wrong'], 500);
+            return response()->json(['error'=> 'Ups! Something wrong'], 500);
         }
     }
 
@@ -79,11 +76,9 @@ class UserController extends Controller
 
             if(empty($user)){
                 return response()->json(
-                    [
-                        "error" => "user not exists"
-                    ],404
-                );
+                    [ "error" => "user not exists" ],404 );
             };
+
             return response()->json($user, 200);
 
         } catch (\Throwable $th) {
@@ -111,30 +106,26 @@ class UserController extends Controller
         };
         
         $user = User::where('id',$id)->first();
+
         if(empty($user)){
             return response()->json(["error"=> "contact not exists"], 404);
         };
 
         if(isset($request->familyName)){
-            $user->familyName = $request->familyName;
-        };
-
+            $user->familyName = $request->familyName;};
+            
         if(isset($request->name)){
-            $user->name = $request->name;
-        };
-
+            $user->name = $request->name;};
+           
         if(isset($request->birthday)){
-            $user->birthday = $request->birthday;
-        };
-
+            $user->birthday = $request->birthday;};
+            
         if(isset($request->email)){
-            $user->email = $request->email;
-        };
-
+            $user->email = $request->email;};
+           
         if(isset($request->password)){
-            $user->password = $request->password;
-        };
-
+            $user->password = $request->password;};
+           
         $user->save();
 
         return response()->json(["data"=>$user, "success"=>'User updated'], 200);
@@ -152,9 +143,8 @@ class UserController extends Controller
             $user = User::where('id',$id)->first();
 
             if(empty($user)){
-                return response()->json(["error"=> "user not exists"], 404);
-            };
-            
+                return response()->json(["error"=> "user not exists"], 404);};
+
             $user->delete();
 
             return response()->json(["data"=> "user deleted"], 200);
@@ -164,6 +154,4 @@ class UserController extends Controller
             return response()->json([ 'error'=> 'Ups! Something wrong'], 500);
         }
     }
-
-
 }
