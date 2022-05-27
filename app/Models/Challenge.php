@@ -27,4 +27,9 @@ class Challenge extends Model
     {
         return $this->belongsTo(User::class, 'user_id');    //the challenge model belong to user   // one challenge belongs to one user
     }
+
+    public function rewards()   //many to many
+    {
+        return $this->belongsToMany(Reward::class);
+    }
 }
