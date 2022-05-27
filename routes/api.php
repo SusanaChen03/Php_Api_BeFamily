@@ -15,10 +15,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::group([
     'middleware' => 'jwt.auth'
-    ], function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/profile', [AuthController::class, 'profile']);
-    });
+], function () {
+Route::post('/logout', [AuthController::class, 'logout']);
+Route::get('/profile', [AuthController::class, 'profile']);
+});
 
 // USERS
 
@@ -41,7 +41,7 @@ Route::group([
 Route::post('/member', [MemberController::class, 'createUserMember']);  
 });
 
-//CHALLENGES
+//CHALLENGE
 
 Route::group([
     'middleware' => 'jwt.auth'
@@ -53,6 +53,17 @@ Route::patch('/challenge/{id}', [ChallengeController::class, 'updateChallengeByI
 Route::delete('/challenge/{id}', [ChallengeController::class, 'deleteChallengeById']);   
 });
 
+//REWARD
+
+Route::group([
+    'middleware' => 'jwt.auth'
+], function(){
+Route::post('/reward', [ChallengeController::class, 'createReward']);  
+Route::get('/rewards', [ChallengeController::class, 'getAllReward']);    
+Route::get('/reward/{id}', [ChallengeController::class, 'getRewardById']);  //buscar por id de challenge
+Route::patch('/reward/{id}', [ChallengeController::class, 'updateRewardById']);   
+Route::delete('/reward/{id}', [ChallengeController::class, 'deleteRewardById']);   
+});
 
 
 
