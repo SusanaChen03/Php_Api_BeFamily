@@ -47,7 +47,7 @@ Route::group([
     'middleware' => 'jwt.auth'
 ], function(){
 Route::post('/challenge', [ChallengeController::class, 'createChallenge']);  
-Route::get('/challenges/{name}', [ChallengeController::class, 'getAllChallenge']);    
+Route::get('/challenges', [ChallengeController::class, 'getAllChallenges']);    
 Route::get('/challenge/{id}', [ChallengeController::class, 'getChallengeById']);  
 Route::patch('/challenge/{id}', [ChallengeController::class, 'updateChallengeById']);   
 Route::delete('/challenge/{id}', [ChallengeController::class, 'deleteChallengeById']);   
