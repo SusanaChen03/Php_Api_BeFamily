@@ -43,4 +43,25 @@ class RewardController extends Controller
             return response()->json([ 'error'=> 'Ups! Something wrong'], 500);
         }
     }
+
+    
+    public function getAllReward($challenge_id) //get all rewards for challenge id
+    {
+        try {
+            Log::info('start get all rewards');
+
+            $reward = DB::table('rewards')->where('challenge_id', $challenge_id)->get()->toArray();
+
+            if (empty($reward)) {
+                return response()->json(["success"=> "There are not rewards"], 202);
+            };
+
+            return response()->json($reward, 200);
+
+        } catch (\Throwable $th) {
+            Log::error('Failed to get all rewards->'.$th->getMessage());
+            return response()->json(['error'=> 'Ups! Something Wrong'], 500);
+        }
+    }
+
 }
