@@ -17,6 +17,8 @@ class RewardController extends Controller
             Log::info('Init create reward');
             $validator = Validator::make($request->all(), [   
                 'name' => 'required|string',
+                'image'=>'required|url',
+                'description'=>'required|string'
             ]);
 
             if ($validator->fails()) {
@@ -26,7 +28,10 @@ class RewardController extends Controller
             $newReward= new Reward();
             $userId = auth()->user()->id;
             $newReward->name = $request->name;
-            $newReward->user_id=$userId;  
+            $newReward->image = $request->image;
+            $newReward->description = $request->description;
+            $newReward->challenge_id= $request->challenge_id;
+           
 
             $newReward->save();
 
@@ -38,6 +43,4 @@ class RewardController extends Controller
             return response()->json([ 'error'=> 'Ups! Something wrong'], 500);
         }
     }
-
-    
 }
