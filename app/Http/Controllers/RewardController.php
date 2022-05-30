@@ -64,4 +64,43 @@ class RewardController extends Controller
         }
     }
 
+    
+    public function updateRewardById(Request $request, $id)
+    {
+        try {
+            Log::info('init update reward by id');
+
+            $validator = Validator::make($request->all(), [
+                'name' => 'string|max:250',
+                'image' => 'url',
+                'description'=> 'string|max:500'
+            ]); 
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 418);
+            };
+
+            $reward = Reward::where('id', $id)->first();
+
+            if(empty($reward)){
+                return response()->json(['error'=>'rewards not exist'],404);
+            };
+            if(isset($request->name)){
+                $reward->name = $request->name;
+            };
+            if(isset($request->image)){
+                $reward->image = $request->image;
+            };
+            if(isset($request->description)){
+                $reward->description = $request->description;
+            };
+
+            $reward->save();
+            return response()->json(["data"=>$reward, "success"=>'Reward updated'], 200);
+
+        } catch (\Throwable $th) {
+            Log::error('Failed to update the reward->'.$th->getMessage());
+            return response()->json(['error'=> 'Ups! Something Wrong'], 500);
+        };
+    }
+
 }
