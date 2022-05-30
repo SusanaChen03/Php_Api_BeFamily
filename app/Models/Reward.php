@@ -11,7 +11,10 @@ class Reward extends Model
 
     protected $fillable = [
         'name',
+        'image',
+        'description',
         'challenge_id',
+        'user_id'
     ];
 
     public function challenges()   //many to many
