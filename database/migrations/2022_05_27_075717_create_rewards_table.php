@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('rewards', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 500);
+            $table->string('name', 250);
+            $table->string('image');
+            $table->string('description', 500);
             $table->unsignedBigInteger('challenge_id');
             $table->foreign('challenge_id')->references('id')->on('challenges');
             $table->timestamps();
