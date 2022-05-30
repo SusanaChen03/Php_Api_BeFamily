@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\RewardController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -58,12 +59,33 @@ Route::delete('/challenge/{id}', [ChallengeController::class, 'deleteChallengeBy
 Route::group([
     'middleware' => 'jwt.auth'
 ], function(){
-Route::post('/reward', [ChallengeController::class, 'createReward']);  
-Route::get('/rewards', [ChallengeController::class, 'getAllReward']);    
-Route::get('/reward/{id}', [ChallengeController::class, 'getRewardById']);  //buscar por id de challenge
-Route::patch('/reward/{id}', [ChallengeController::class, 'updateRewardById']);   
-Route::delete('/reward/{id}', [ChallengeController::class, 'deleteRewardById']);   
+Route::post('/reward', [RewardController::class, 'createReward']);  
+Route::get('/rewards/{challenge_id}', [RewardController::class, 'getAllReward']); 
+Route::patch('/reward/{id}', [RewardController::class, 'updateRewardById']);   
+Route::delete('/reward/{id}', [RewardController::class, 'deleteRewardById']);   
 });
 
 
+//buscar por id de challenge
 
+
+Route::get('/reward/{id}', [RewardController::class, 'getRewardById']);   // find by user_id 
+
+// public function getRewardById($id) ////funciona igual que el de arriba 
+// {
+//     try {
+//         Log::info('init get reward by id');
+//         $userId = auth()->user()->id;
+
+//         $reward = DB::table('rewards')->where('user_id', $userId)->where('user_id', $id)->get();
+
+//         if(empty($reward)){
+//             return response()->json(['These not have rewards'], 404);
+//         };
+//         return response()->json($reward, 200);
+
+//     } catch (\Throwable $th) {
+//         Log::error('Failed to get reward by Id');
+//         return response()->json(['error'=> 'Ups! Somethings wrong'], 500);
+//     }
+// }
