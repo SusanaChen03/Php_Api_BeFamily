@@ -103,4 +103,23 @@ class RewardController extends Controller
         };
     }
 
+    public function deleteRewardById($id)
+    {
+        try {
+            Log::info('init delete reward');
+
+            $reward = Reward::where('id',$id)->first();
+
+            if(empty($reward)){
+                return response()->json(['error'=>'Not found the reward'], 404);
+            }
+
+            $reward->delete();
+            return response()->json(["data"=> "reward deleted"], 200);
+
+        } catch (\Throwable $th) {
+            Log::error('Failed to delete the Reward');
+        }
+    }
+
 }
