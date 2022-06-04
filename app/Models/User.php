@@ -64,4 +64,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Challenge::class);  //one user have many challenges
     }
+
+    public function rewards()  //one to many
+    {
+        return $this->hasMany(Reward::class); 
+    }
 }
