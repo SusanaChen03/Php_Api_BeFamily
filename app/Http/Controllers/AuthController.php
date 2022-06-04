@@ -16,13 +16,14 @@ class AuthController extends Controller
         try {
             Log::info('Init register user');
 
-            $validator = Validator::make($request->all(), [
-                'familyName'=> 'required|string|unique:users',
-                'name' => 'required|string|max:255',
-                'birthday' => 'required|date',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:3',
+            $validator = Validator::make($request->all(), [  
+                'familyName'=>'required|string',
+                'name' => 'required|string',
+                'birthday' => 'required|string',
+                'email' => 'required|email',
+                'password' => 'required|string',
             ]);
+
 
             if ($validator->fails()) {
                 return response()->json($validator->errors()->toJson(), 418);
@@ -36,8 +37,8 @@ class AuthController extends Controller
                 'password' => bcrypt($request->password)
             ]);
             
-            $token = JWTAuth::fromUser($user);
             
+            $token = JWTAuth::fromUser($user);
             return response()->json(compact('user', 'token'), 201);
         } catch (\Throwable $th) {
             Log::error('Failed to register user->' . $th->getMessage());
@@ -53,14 +54,15 @@ class AuthController extends Controller
             $input = $request->only('email', 'password');
 
             $jwt_token = null;
-
+            
             if (!$jwt_token = JWTAuth::attempt($input)) {
+                Log::info('HTTP_UNAUTHORIZED login');
                 return response()->json([
                     'success' => false,
                     'message' => 'Invalid Email or Password',
                 ], Response::HTTP_UNAUTHORIZED);
             };
-
+            Log::info('fin login');
             return response()->json(['success' => true, 'token' => $jwt_token]);
 
         } catch (\Throwable $th) {
