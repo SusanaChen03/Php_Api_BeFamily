@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Challenge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -121,5 +122,40 @@ class RewardController extends Controller
             Log::error('Failed to delete the Reward');
         }
     }
+
+    public function createRewardbyChallenge(Request $request) //???
+    {
+        try {
+            Log::info('init create reward by challenge');
+
+            $challenge = Challenge::find($request->challengeId);
+            $challenge->rewards()->attach($request->rewardId);
+
+            return response()->json(['data'=>'ok', 'success'=>'Reward created'], 200);
+        } catch (\Throwable $th) {
+            Log::error('Failed to create the Reward->'.$th->getMessage());
+            return response()->json([ 'error'=> $th->getMessage()], 404);
+        }
+    }
+
+
+//         public function getRewardById($id) 
+//     {
+//         try {
+//             Log::info('init get reward by id');
+//             $userId = auth()->user()->id;
+
+//             $reward = DB::table('rewards')->where('user_id', $userId)->where('user_id', $id)->get();
+
+//             if(empty($reward)){
+//                 return response()->json(['These not have rewards'], 404);
+//             };
+//             return response()->json($reward, 200);
+
+//         } catch (\Throwable $th) {
+//             Log::error('Failed to get reward by Id'.$th);
+//             return response()->json(['error'=> 'Ups! Somethings wrong'.$th], 500);
+//         }
+// }
 
 }
