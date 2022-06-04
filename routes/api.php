@@ -10,9 +10,13 @@ use Illuminate\Support\Facades\Route;
 
 
 //AUTH
-
+Route::group([
+    'middleware' => ['cors']
+], function(){
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+});
+
 
 Route::group([
     'middleware' => 'jwt.auth'
@@ -24,15 +28,15 @@ Route::get('/profile', [AuthController::class, 'profile']);
 // USERS
 
 Route::group([
-    'middleware' => 'jwt.auth'
+    'middleware' => ['jwt.auth', 'cors']
 ], function(){
-Route::post('/user', [UserController::class, 'createUser']);  
 Route::get('/users', [UserController::class, 'getAllUsers']);    
 Route::get('/user/{id}', [UserController::class, 'getUserById']);  
 Route::patch('/user/{id}', [UserController::class, 'updateUserById']);   
 Route::delete('/user/{id}', [UserController::class, 'deleteUserById']);   
 });
 
+Route::post('/user', [UserController::class, 'createUser']);  
 
 //MEMBER
 
@@ -63,29 +67,18 @@ Route::post('/reward', [RewardController::class, 'createReward']);
 Route::get('/rewards/{challenge_id}', [RewardController::class, 'getAllReward']); 
 Route::patch('/reward/{id}', [RewardController::class, 'updateRewardById']);   
 Route::delete('/reward/{id}', [RewardController::class, 'deleteRewardById']);   
+
+Route::post('/rewardByChallenge', [RewardController::class, 'createRewardbyChallenge']);  
+
+
 });
 
 
 //buscar por id de challenge
 
+Route::group([
+    'middleware' => 'jwt.auth'
+], function(){
+//Route::get('/reward/{id}', [RewardController::class, 'getRewardById']);   // find by user_id 
+});
 
-Route::get('/reward/{id}', [RewardController::class, 'getRewardById']);   // find by user_id 
-
-// public function getRewardById($id) ////funciona igual que el de arriba 
-// {
-//     try {
-//         Log::info('init get reward by id');
-//         $userId = auth()->user()->id;
-
-//         $reward = DB::table('rewards')->where('user_id', $userId)->where('user_id', $id)->get();
-
-//         if(empty($reward)){
-//             return response()->json(['These not have rewards'], 404);
-//         };
-//         return response()->json($reward, 200);
-
-//     } catch (\Throwable $th) {
-//         Log::error('Failed to get reward by Id');
-//         return response()->json(['error'=> 'Ups! Somethings wrong'], 500);
-//     }
-// }
