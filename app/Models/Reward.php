@@ -21,4 +21,9 @@ class Reward extends Model
     {
         return $this->belongsToMany(Challenge::class);
     }
+
+    public function users()  // one to many
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
