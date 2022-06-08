@@ -4,25 +4,47 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Validator;
 
 class MemberController extends Controller
 {
     public function createUserMember(Request $request) //family member create
     {
         try {
-            Log::info('Init create User');
+            Log::info('Init create Member');
+            $validator = Validator::make($request->all(),[
+                'familyName'=>'required|string',
+                'name' => 'required|string',
+                'birthday' => 'required|string',
+                'email' => 'required|email',
+                'password' => 'required|string',
+            ]);
 
-            $member = $request->all();
+            if ($validator->fails()) {
+ 
+                return response()->json(["data" => $validator->errors(), "success" => false], 418);
+            };
 
-            $newMember = User::create($member);
+            $newMember = new User();  
+            $newMember->familyName = $request->familyName;
+            $newMember->name = $request->name;
+            $newMember->birthday = $request->birthday;
+            $newMember->email=$request->email;
+            $newMember->password=$request->password;  
+            $newMember->rol= 'user';                                   
+            
 
-            return response()->json(["data" => $newMember, "success" => 'User created'], 200);
+            $newMember->save();
+
+            return response()->json(["data" => $newMember, "success" => true], 200);
         } catch (\Throwable $th) {
             Log::error('Failed to create user->' . $th->getMessage());
 
-            return response()->json(['error' => 'Ups! Something wrong'], 500);
+            return response()->json(['error' => 'Ups! Something wrong'.$th], 500);
         }
     }
-}
+};
+
+
