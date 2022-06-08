@@ -20,6 +20,7 @@ class UserController extends Controller
                 'birthday' => 'required|string',
                 'email' => 'required|email',
                 'password' => 'required|string',
+    
             ]);
 
             if ($validator->fails()) {
@@ -31,7 +32,8 @@ class UserController extends Controller
             $newUser->name = $request->name;
             $newUser->birthday = $request->birthday;
             $newUser->email=$request->email;
-            $newUser->password=$request->password;                                     
+            $newUser->password=$request->password;  
+            $newUser->rol= 'admin';                                   
             
             $newUser->save();
 
@@ -47,7 +49,8 @@ class UserController extends Controller
     public function getAllUsers()
     {
         try {
-            Log::info('Init get all contacts');
+            Log::info('Get all users');
+        
 
             $user = User::all(); 
 
@@ -56,7 +59,7 @@ class UserController extends Controller
                     ["success" => "There are not users" ], 202);
             };
 
-            Log::info('Get all users');
+  
 
             return response()->json($user, 200);
 
