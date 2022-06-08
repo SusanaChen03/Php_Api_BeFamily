@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('name', 250);
             $table->string('image');
             $table->string('description', 500);
-            $table->unsignedBigInteger('challenge_id');
-            $table->foreign('challenge_id')->references('id')->on('challenges');
             $table->timestamps();
         });
     }
