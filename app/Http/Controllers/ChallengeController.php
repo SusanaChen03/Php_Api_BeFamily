@@ -44,14 +44,14 @@ class ChallengeController extends Controller
         }
     }
 
-    public function getAllChallenge()
+    public function getAllChallenges()
     {
         try {
             Log::info('Init get all Challenge');
-            $userId = auth()->user()->id;
+     
 
-            $challenge = DB::table('challenges')->where('user_id', $userId)->get()->toArray();
-            
+            $challenge = Challenge::all();
+
             if(empty($challenge)){
                 return response()->json(
                     [
@@ -69,11 +69,11 @@ class ChallengeController extends Controller
         }
     }
 
-    public function getAllChallenges($familyName) //busqueda por el nombre de familia
+    public function getAllChallengeByFamilyName($familyName) //busqueda por el nombre de familia
     {
         try {
             Log::info('Init get Challenge by id');
-            $userId = auth()->user()->id;
+          
 
             $challenge = DB::table('challenges')->where('familyName',$familyName)->get();
 
@@ -97,14 +97,14 @@ class ChallengeController extends Controller
             Log::info('Init get Challenge by id');
             $userId = auth()->user()->id;
 
-            $challenge = DB::table('challenges')->where('user_id',$userId)->where('user_id',$id)->get();
+            $challenge = DB::table('challenges')->where('id',$id)->get();
 
             if(empty($challenge)){
                 return response()->json(
                     [  "error" => "Challenge not exists"  ],404  );
             };
 
-            return response()->json($challenge, 200);
+            return response()->json($challenge->users(), 200);
 
         } catch (\Throwable $th) {
             Log::error('Failed to get challenge by id->'.$th->getMessage());
