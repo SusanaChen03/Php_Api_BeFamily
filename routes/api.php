@@ -31,11 +31,11 @@ Route::group([
     'middleware' => ['jwt.auth', 'cors']
 ], function(){
 Route::get('/users', [UserController::class, 'getAllUsers']);    
-Route::get('/user/{id}', [UserController::class, 'getUserById']);  
+
 Route::patch('/user/{id}', [UserController::class, 'updateUserById']);   
 Route::delete('/user/{id}', [UserController::class, 'deleteUserById']);   
 });
-
+Route::get('/user/{id}', [UserController::class, 'getUserById']);  
 Route::post('/user', [UserController::class, 'createUser']);  
 
 //MEMBER
@@ -51,8 +51,9 @@ Route::post('/member', [MemberController::class, 'createUserMember']);
 Route::group([
     'middleware' => 'jwt.auth'
 ], function(){
-Route::post('/challenge', [ChallengeController::class, 'createChallenge']);  
-Route::get('/challenges', [ChallengeController::class, 'getAllChallenges']);    
+Route::post('/challenge', [ChallengeController::class, 'createChallenge']); 
+Route::get('/challenges', [ChallengeController::class, 'getAllChallenges']);     
+Route::get('/challenge/familyName/{familyName}', [ChallengeController::class, 'getAllChallengeByFamilyName']);    
 Route::get('/challenge/{id}', [ChallengeController::class, 'getChallengeById']);  
 Route::patch('/challenge/{id}', [ChallengeController::class, 'updateChallengeById']);   
 Route::delete('/challenge/{id}', [ChallengeController::class, 'deleteChallengeById']);   
@@ -64,21 +65,12 @@ Route::group([
     'middleware' => 'jwt.auth'
 ], function(){
 Route::post('/reward', [RewardController::class, 'createReward']);  
-Route::get('/rewards/{challenge_id}', [RewardController::class, 'getAllReward']); 
+Route::get('/rewards', [RewardController::class, 'getAllRewards']); 
+Route::get('/reward{id}', [RewardController::class, 'getRewardById']); 
 Route::patch('/reward/{id}', [RewardController::class, 'updateRewardById']);   
-Route::delete('/reward/{id}', [RewardController::class, 'deleteRewardById']);   
-
-Route::post('/rewardByChallenge', [RewardController::class, 'createRewardbyChallenge']);  
-
-
+Route::delete('/reward/{id}', [RewardController::class, 'deleteRewardById']);     
 });
 
 
-//buscar por id de challenge
 
-Route::group([
-    'middleware' => 'jwt.auth'
-], function(){
-//Route::get('/reward/{id}', [RewardController::class, 'getRewardById']);   // find by user_id 
-});
 
