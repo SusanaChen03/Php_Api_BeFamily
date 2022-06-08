@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +35,8 @@ class AuthController extends Controller
                 'name' => $request->get('name'),
                 'birthday' => $request->get('birthday'),
                 'email' => $request->get('email'),
-                'password' => bcrypt($request->password)
+                'password' => bcrypt($request->password),
+                'rol'=> 'admin'
             ]);
             
             
@@ -62,8 +64,15 @@ class AuthController extends Controller
                     'message' => 'Invalid Email or Password',
                 ], Response::HTTP_UNAUTHORIZED);
             };
+            $user = DB::table('users')->where('email',$request->get('email'))->first();
+
+            if(empty($user)){
+                return response()->json(
+                    [ "error" => "user not exists" ],404 );
+            };
+
             Log::info('fin login');
-            return response()->json(['success' => true, 'token' => $jwt_token]);
+            return response()->json(['success' => true, 'user' => $user,'token' => $jwt_token]);
 
         } catch (\Throwable $th) {
 
