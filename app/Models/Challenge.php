@@ -14,19 +14,18 @@ class Challenge extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 
+    protected $fillable = [
         'familyName',
         'name',
         'repeat',
         'reward',
         'member_id',
-        'user_id'
+        'user_id',
+        'color',
+        'urlReward',
+        'isActive'
     ];
 
-    public function users()  // one to many
-    {
-        return $this->belongsTo(User::class, 'user_id');    //the challenge model belong to user   // one challenge belongs to one user
-    }
 
     public function rewards()   //many to many
     {

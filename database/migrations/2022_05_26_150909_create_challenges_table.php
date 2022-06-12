@@ -20,6 +20,9 @@ return new class extends Migration
             $table->string('name');
             $table->integer('repeat');
             $table->string('reward');
+            $table->string('color');
+            $table->string('urlReward');
+            $table->boolean('isActive');
             $table->unsignedBigInteger('member_id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
