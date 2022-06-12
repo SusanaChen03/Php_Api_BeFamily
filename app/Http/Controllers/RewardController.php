@@ -29,6 +29,7 @@ class RewardController extends Controller
             $newReward = new Reward();
             $userId = auth()->user()->id;
             $newReward->name = $request->name;
+            $newReward->color = $request->color;
             $newReward->image = $request->image;
             $newReward->description = $request->description;
             $newReward->familyName = $request->familyName;
