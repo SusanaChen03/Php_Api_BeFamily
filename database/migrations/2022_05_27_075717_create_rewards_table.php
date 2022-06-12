@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('rewards', function (Blueprint $table) {
             $table->id();
+            $table->string('familyName');
             $table->string('name', 250);
             $table->string('image');
             $table->string('description', 500);
+            $table->string('color');
             $table->timestamps();
         });
     }

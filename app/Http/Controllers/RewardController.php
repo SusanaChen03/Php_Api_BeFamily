@@ -31,7 +31,7 @@ class RewardController extends Controller
             $newReward->name = $request->name;
             $newReward->image = $request->image;
             $newReward->description = $request->description;
-
+            $newReward->familyName = $request->familyName;
             $newReward->save();
 
             return response()->json(["data" => $newReward, "success" => true], 200);
@@ -63,25 +63,50 @@ class RewardController extends Controller
         }
     }
 
-    public function getRewardById($id)  //no funciona en el postman
+    public function getRewardByFamilyName($familyName)
     {
+
         try {
-            Log::info('start get rewards by Id');
+            Log::info('Get rewards by familyNAme');
 
-            $reward = DB::table('rewards')->where('id', $id)->get();
-
+            $reward = DB::table('rewards')->where('familyName', $familyName)->get();
 
             if (empty($reward)) {
-                return response()->json(["success" => "There are not rewards"], 202);
+                return response()->json(
+                    ["success" => "There are not reward"],
+                    202
+                );
             };
 
             return response()->json($reward, 200);
         } catch (\Throwable $th) {
-            Log::error('Failed to get all rewards->' . $th->getMessage());
-            return response()->json(['error' => 'Ups! Something Wrong' . $th], 500);
+            Log::error('Failed to get the members->' . $th->getMessage());
+
+            return response()->json(['success' => false . $th], 500);
         }
     }
+    public function getRewardByIds($id)
+    {
 
+        try {
+            Log::info('Get rewards by id');
+
+            $reward = DB::table('rewards')->where('id', $id)->first();
+
+            if (empty($reward)) {
+                return response()->json(
+                    ["success" => false],
+                    202
+                );
+            };
+
+            return response()->json($reward, 200);
+        } catch (\Throwable $th) {
+            Log::error('Failed to get the members->' . $th->getMessage());
+
+            return response()->json(['success' => false], 500);
+        }
+    }
     public function updateRewardById(Request $request, $id)
     {
         try {
@@ -99,7 +124,7 @@ class RewardController extends Controller
             $reward = Reward::where('id', $id)->first();
 
             if (empty($reward)) {
-                return response()->json(['error' => 'rewards not exist'], 404);
+                return response()->json(['success' => false], 404);
             };
             if (isset($request->name)) {
                 $reward->name = $request->name;
@@ -112,10 +137,10 @@ class RewardController extends Controller
             };
 
             $reward->save();
-            return response()->json(["data" => $reward, "success" => 'Reward updated'], 200);
+            return response()->json(["data" => $reward, "success" => true], 200);
         } catch (\Throwable $th) {
             Log::error('Failed to update the reward->' . $th->getMessage());
-            return response()->json(['error' => 'Ups! Something Wrong'], 500);
+            return response()->json(['success' => false], 500);
         };
     }
 
@@ -136,5 +161,4 @@ class RewardController extends Controller
             Log::error('Failed to delete the Reward');
         }
     }
-
 }
