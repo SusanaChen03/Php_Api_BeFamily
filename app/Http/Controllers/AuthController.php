@@ -17,8 +17,8 @@ class AuthController extends Controller
         try {
             Log::info('Init register user');
 
-            $validator = Validator::make($request->all(), [  
-                'familyName'=>'required|string',
+            $validator = Validator::make($request->all(), [
+                'familyName' => 'required|string',
                 'name' => 'required|string',
                 'birthday' => 'required|string',
                 'email' => 'required|email',
@@ -31,17 +31,17 @@ class AuthController extends Controller
             }
 
             $user = User::create([
-                'familyName'=>$request->get('familyName'),
+                'familyName' => $request->get('familyName'),
                 'name' => $request->get('name'),
                 'birthday' => $request->get('birthday'),
                 'email' => $request->get('email'),
                 'password' => bcrypt($request->password),
-                'rol'=> 'admin'
+                'rol' => 'admin'
             ]);
-            
-            
+
+
             $token = JWTAuth::fromUser($user);
-            return response()->json(compact('user', 'token'), 201);
+            return response()->json(['success' => true, 'user' => $user, 'token' => $token]);
         } catch (\Throwable $th) {
             Log::error('Failed to register user->' . $th->getMessage());
 
@@ -56,7 +56,7 @@ class AuthController extends Controller
             $input = $request->only('email', 'password');
 
             $jwt_token = null;
-            
+
             if (!$jwt_token = JWTAuth::attempt($input)) {
                 Log::info('HTTP_UNAUTHORIZED login');
                 return response()->json([
@@ -64,16 +64,17 @@ class AuthController extends Controller
                     'message' => 'Invalid Email or Password',
                 ], Response::HTTP_UNAUTHORIZED);
             };
-            $user = DB::table('users')->where('email',$request->get('email'))->first();
+            $user = DB::table('users')->where('email', $request->get('email'))->first();
 
-            if(empty($user)){
+            if (empty($user)) {
                 return response()->json(
-                    [ "error" => "user not exists" ],404 );
+                    ["error" => "user not exists"],
+                    404
+                );
             };
 
             Log::info('fin login');
-            return response()->json(['success' => true, 'user' => $user,'token' => $jwt_token]);
-
+            return response()->json(['success' => true, 'user' => $user, 'token' => $jwt_token]);
         } catch (\Throwable $th) {
 
             Log::error('Failed to login user->' . $th->getMessage());
@@ -96,7 +97,6 @@ class AuthController extends Controller
                 'success' => true,
                 'message' => 'User logged out successfully'
             ]);
-
         } catch (\Exception $exception) {
 
             return response()->json([
@@ -112,7 +112,6 @@ class AuthController extends Controller
             Log::info('Init Get Profile');
 
             return response()->json(auth()->user());
-
         } catch (\Throwable $th) {
 
             Log::error('Failed to get your profile->' . $th->getMessage());
