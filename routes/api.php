@@ -31,11 +31,12 @@ Route::group([
     'middleware' => ['jwt.auth', 'cors']
 ], function(){
 Route::get('/users', [UserController::class, 'getAllUsers']);    
-
+Route::get('/user/{id}', [UserController::class, 'getUserById']); 
 Route::patch('/user/{id}', [UserController::class, 'updateUserById']);   
 Route::delete('/user/{id}', [UserController::class, 'deleteUserById']);   
 });
-Route::get('/user/{id}', [UserController::class, 'getUserById']);  
+
+
 Route::post('/user', [UserController::class, 'createUser']);  
 
 //MEMBER
@@ -44,6 +45,7 @@ Route::group([
     'middleware' => 'jwt.auth'
 ], function(){
 Route::post('/member', [MemberController::class, 'createUserMember']);  
+Route::get('/members/{familyName}', [MemberController::class, 'getAllMembers']);  
 });
 
 //CHALLENGE
@@ -66,7 +68,8 @@ Route::group([
 ], function(){
 Route::post('/reward', [RewardController::class, 'createReward']);  
 Route::get('/rewards', [RewardController::class, 'getAllRewards']); 
-Route::get('/reward{id}', [RewardController::class, 'getRewardById']); 
+Route::get('/reward/{familyName}', [RewardController::class, 'getRewardByFamilyName']); 
+Route::get('/reward/id/{id}', [RewardController::class, 'getRewardByIds']); 
 Route::patch('/reward/{id}', [RewardController::class, 'updateRewardById']);   
 Route::delete('/reward/{id}', [RewardController::class, 'deleteRewardById']);     
 });
