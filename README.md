@@ -10,14 +10,11 @@
 
 -[Descripción y Usabilidad](#Descripción) 📋
 
--[Tablas](#Tablas) 
+-[Tablas](#Tablas)
 
+-[Relaciones](#Relaciones)
 
-
-
-
-
--[Base de datos](#BaseDeDatos) 🥑
+-[Endpoints](#Endpoints)
 
 -[Instalación](#Instalación) 🍕
 
@@ -26,10 +23,6 @@
 -[Como ayudar](#ComoAyudar) 🤞
 
 -[Agradecimientos](#Agradecimientos) 👏
-
--[Endpoints](#Endpoints) 
-
-
 
 
 ## Introducción 🌍
@@ -305,15 +298,15 @@ Route::delete('/reward/{id}', [RewardController::class, 'deleteRewardById']);
 
 
 
-# Instalación 🥷
+# Instalación 
 
 Para poder consumir la api es necesario lo siguiente:
-- Clonar o forkear el repositorio si deseas, **Susana:** _(https://github.com/SusanaChen03/Project_GamerForum)_.
+- Clonar o forkear el repositorio si deseas, **Susana:** _(https://github.com/SusanaChen03/Php_Api_BeFamily.git)_.
 - Instalar Composer: `https://getcomposer.org/download/`
 - Hacer _composer install_ para cargar las dependencias del composer.json
-- Atacar al API publicada en https://gamer-forum.herokuapp.com/ o como localhost si lo prefieres (es necesario cambiarlo en el .env)
+- Atacar al API publicada en https://befamily-backend.herokuapp.com/ o como localhost si lo prefieres (es necesario cambiarlo en el .env)
 - Revisar esta documentación.
-- Es necesario utilizar Postman para probar el Api ya que carece de Frontend.
+- Puedes utilizarlo con el FrontEnd publicado en ... o atacar los endpoints en el postman.
 - Conexión a internet
 
 
