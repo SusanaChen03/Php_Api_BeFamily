@@ -75,20 +75,21 @@ class UserController extends Controller
         try {
             Log::info('Init get user by Id');
 
-            $user = DB::table('users')->where('id', $id)->get();
+            $user = DB::table('users')->where('id', $id)->first();
 
             if (empty($user)) {
                 return response()->json(
-                    ["error" => "user not exists"],
+                    ["data" => "user not exists", "success" => false],
                     404
                 );
             };
 
-            return response()->json($user, 200);
+            return response()->json(["data" => $user, "success" => true], 200);
         } catch (\Throwable $th) {
             Log::error('Failed to get user->' . $th->getMessage());
 
-            return response()->json(['error' => 'Ups! Something wrong'], 500);
+            return response()->json(["data" => 'Ups! Something wrong'.$th, "success" => false], 500);
+
         }
     }
 
@@ -140,7 +141,7 @@ class UserController extends Controller
 
             $user->save();
 
-            return response()->json(["data" => $user, "success" => 'User updated'], 200);
+            return response()->json(["data" => $user, "success" => true], 200);
         } catch (\Throwable $th) {
             Log::error('Failed to update user data->' . $th->getMessage());
             return response()->json(['error' => 'Ups! Something wrong'], 500);
